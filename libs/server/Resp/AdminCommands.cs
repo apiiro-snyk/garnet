@@ -55,7 +55,7 @@ namespace Garnet.server
                     }
 
                     // NOTE: Some authenticators cannot accept username/password pairs
-                    if (!_authenticator.CanAuthenticate)
+                    if (_authenticator == null || !_authenticator.CanAuthenticate)
                     {
                         while (!RespWriteUtils.WriteError("ERR Client sent AUTH, but configured authenticator does not accept passwords"u8, ref dcurr, dend))
                             SendAndReset();
@@ -87,7 +87,8 @@ namespace Garnet.server
                 return true;
             }
 
-            if (_authenticator.CanAuthenticate && !_authenticator.IsAuthenticated)
+            Debug.Assert(_authenticator != null);
+            if (_authenticator != null && _authenticator.CanAuthenticate && !_authenticator.IsAuthenticated)
             {
                 // If the current session is unauthenticated, we stop parsing, because no other commands are allowed
                 if (!DrainCommands(bufSpan, count))

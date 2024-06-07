@@ -14,7 +14,7 @@ namespace Garnet.server.Auth.Settings
         /// <param name="storeWrapper">The main store the authenticator will be associated with.</param>
         public IGarnetAuthenticator CreateAuthenticator(StoreWrapper storeWrapper)
         {
-            return new GarnetNoAuthAuthenticator();
+            return null;
         }
 
         /// <summary>

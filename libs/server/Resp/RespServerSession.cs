@@ -140,7 +140,7 @@ namespace Garnet.server
 
             this.storeWrapper = storeWrapper;
             this.subscribeBroker = subscribeBroker;
-            this._authenticator = storeWrapper.serverOptions.AuthSettings?.CreateAuthenticator(this.storeWrapper) ?? new GarnetNoAuthAuthenticator();
+            this._authenticator = storeWrapper.serverOptions.AuthSettings?.CreateAuthenticator(this.storeWrapper) ?? null;
 
             // Associate new session with default user and automatically authenticate, if possible
             this.AuthenticateUser(Encoding.ASCII.GetBytes(this.storeWrapper.accessControlList.GetDefaultUser().Name));
@@ -196,7 +196,7 @@ namespace Garnet.server
         bool AuthenticateUser(ReadOnlySpan<byte> username, ReadOnlySpan<byte> password = default(ReadOnlySpan<byte>))
         {
             // Authenticate user or change to default user if no authentication is supported
-            bool success = _authenticator.CanAuthenticate ? _authenticator.Authenticate(password, username) : true;
+            bool success = _authenticator == null ? true : (_authenticator.CanAuthenticate ? _authenticator.Authenticate(password, username) : true);
 
             if (success)
             {
@@ -215,7 +215,7 @@ namespace Garnet.server
                 clusterSession?.SetUser(this._user);
             }
 
-            return _authenticator.CanAuthenticate ? success : false;
+            return (_authenticator != null && _authenticator.CanAuthenticate) ? success : false;
         }
 
         public override int TryConsumeMessages(byte* reqBuffer, int bytesReceived)
