@@ -59,7 +59,8 @@ namespace Tsavorite.core
         void CommitLogCheckpoint(Guid logToken, byte[] commitMetadata);
 
         /// <summary>
-        /// Callback to indicate version shift during checkpoint
+        /// Callback to indicate successful version shift during checkpoint. The guarantee is:
+        /// there will be no writes with version less than newVersion after this call.
         /// </summary>
         /// <param name="oldVersion"></param>
         /// <param name="newVersion"></param>

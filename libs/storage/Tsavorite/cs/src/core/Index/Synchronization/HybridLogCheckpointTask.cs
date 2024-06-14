@@ -35,9 +35,9 @@ namespace Tsavorite.core
                     store._hybridLogCheckpoint.info.beginAddress = store.hlog.BeginAddress;
                     break;
                 case Phase.IN_PROGRESS:
-                    store.CheckpointVersionShift(lastVersion, next.Version);
                     break;
                 case Phase.WAIT_FLUSH:
+                    store.CheckpointVersionShift(lastVersion, next.Version);
                     store._hybridLogCheckpoint.info.headAddress = store.hlog.HeadAddress;
                     store._hybridLogCheckpoint.info.nextVersion = next.Version;
                     break;
