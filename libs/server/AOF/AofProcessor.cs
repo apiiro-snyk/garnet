@@ -376,6 +376,7 @@ namespace Garnet.server
 
             if (processPrimaryStream)
             {
+                // TODO: main memory replication should not perform buffering of v+1 records
                 switch (storeType)
                 {
                     case AofStoreType.MainStoreType:
